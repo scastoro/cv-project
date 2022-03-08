@@ -1,4 +1,5 @@
 import React from "react";
+import uuid from "react-uuid";
 
 class Form extends React.Component {
   constructor(props) {
@@ -14,9 +15,11 @@ class Form extends React.Component {
   render() {
     const { title, info } = this.props;
     const inputs = Object.entries(info).map(([key, value]) => (
-      <label htmlFor={key}>
+      <label key={key} htmlFor={key} className={`${title}-${key}-label`}>
         {key}
         <input
+          className={`${title}-${key}-input`}
+          key={key}
           id={key}
           name={key}
           value={value}
@@ -24,7 +27,12 @@ class Form extends React.Component {
         />
       </label>
     ));
-    return <section className={`${title}-section`}>{inputs}</section>;
+    return (
+      <section className={`${title}-section`}>
+        <h2 className={`${title}-heading`}>{title}</h2>
+        {inputs}
+      </section>
+    );
   }
 }
 

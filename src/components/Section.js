@@ -1,4 +1,5 @@
 import React from "react";
+import uuid from "react-uuid";
 
 class Section extends React.Component {
   constructor(props) {
@@ -7,7 +8,9 @@ class Section extends React.Component {
 
   render() {
     const { title, info } = this.props;
-    const inputs = Object.values(info).map((value) => <p>{value}</p>);
+    const inputs = Object.values(info).map((value) => (
+      <p key={uuid()}>{value}</p>
+    ));
     return (
       <section className={`${title}-section`}>
         <h2>{title}</h2>

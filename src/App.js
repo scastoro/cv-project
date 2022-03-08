@@ -8,33 +8,33 @@ class App extends React.Component {
   constructor() {
     super();
 
-    this.state = /* JSON.parse(localStorage.getItem("state"))
+    this.state = JSON.parse(localStorage.getItem("state"))
       ? JSON.parse(localStorage.getItem("state"))
-      : */ {
-      info: {
-        general: {
-          name: "",
-          email: "",
-          phone: "",
-        },
-        education: {
-          school: "",
-          "title of study": "",
-          date: "",
-        },
-        experience: {
-          company: "",
-          position: "",
-          tasks: "",
-          date: "",
-        },
-      },
-      formDisplay: {
-        generalForm: false,
-        educationForm: false,
-        experienceForm: false,
-      },
-    };
+      : {
+          info: {
+            general: {
+              name: "",
+              email: "",
+              phone: "",
+            },
+            education: {
+              school: "",
+              "title of study": "",
+              date: "",
+            },
+            experience: {
+              company: "",
+              position: "",
+              tasks: "",
+              date: "",
+            },
+          },
+          formDisplay: {
+            generalForm: false,
+            educationForm: false,
+            experienceForm: false,
+          },
+        };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.toggleFormDisplay = this.toggleFormDisplay.bind(this);
@@ -54,12 +54,11 @@ class App extends React.Component {
         },
       },
     });
-    // localStorage.setItem("state", JSON.stringify(this.state));
+    localStorage.setItem("state", JSON.stringify(this.state));
   }
 
   async toggleFormDisplay(displayValue, event) {
-    console.log(displayValue);
-    const newValue = !this.state.formDisplay.displayValue;
+    const newValue = !this.state.formDisplay[displayValue];
     await this.setState({
       ...this.state,
       formDisplay: {
@@ -67,17 +66,16 @@ class App extends React.Component {
         [displayValue]: newValue,
       },
     });
-    // localStorage.setItem("state", JSON.stringify(this.state));
+    localStorage.setItem("state", JSON.stringify(this.state));
   }
 
   render() {
     const { info, formDisplay } = this.state;
     const sections = Object.entries(info).map(([key, value], index) => {
-      console.log(Object.keys(formDisplay)[index]);
       const currentDisplay = Object.keys(formDisplay)[index];
       return (
-        <section id={uuid()} className={key}>
-          {formDisplay.currentDisplay ? (
+        <section key={key} className={key}>
+          {!formDisplay[currentDisplay] ? (
             <Section id={uuid()} title={key} info={value} />
           ) : (
             <Form
@@ -93,7 +91,7 @@ class App extends React.Component {
               Object.keys(formDisplay)[index]
             )}
           >
-            Edit
+            {!formDisplay[currentDisplay] ? "Edit" : "Submit"}
           </button>
         </section>
       );
